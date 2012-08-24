@@ -59,8 +59,8 @@ class MockObject {
     if (!invocationBehavior) {
       return null
     }
-    
-    return invocationBehavior(args)
+
+    return invocationBehavior.call(arguments)
   }
 
   private Integer addInvocationAndReturnInvocationIndex (String name, Object args) {

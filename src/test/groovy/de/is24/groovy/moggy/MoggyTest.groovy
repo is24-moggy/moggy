@@ -121,7 +121,7 @@ class MoggyTest extends GroovyTestCase {
   void testShouldPassParametersToBehaviorClosures() {
     def mock = Moggy.mock()
 
-    Moggy.when(mock).foo(7).thenDo { param -> assertEquals 7, param}
+    Moggy.when(mock).foo(7).thenDo { param -> assert [7] == param}
 
     mock.foo(7)
   }

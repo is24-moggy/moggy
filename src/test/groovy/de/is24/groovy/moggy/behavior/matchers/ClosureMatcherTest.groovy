@@ -1,24 +1,31 @@
 package de.is24.groovy.moggy.behavior.matchers
 
+import org.junit.Test
 
-class ClosureMatcherTest extends GroovyTestCase{
 
-  void testShouldMatchAnyValue() {
-    assertTrue new ClosureMatcher(){true}.matches("any value")
+class ClosureMatcherTest {
+
+  @Test
+  void shouldMatchAnyValue() {
+    assert new ClosureMatcher({true}).matches("any value")
   }
 
-  void testShouldMatchNoValue() {
-    assertFalse new ClosureMatcher(){false}.matches("any value")
+  @Test
+  void shouldMatchNoValue() {
+    assert false == new ClosureMatcher({false}).matches("any value")
   }
-  
-  void testEnsureThatObjectArrayParameterIsWrappedBeforeBeingPassedToMatcher () {
+
+  @Test
+  void ensureThatObjectArrayParameterIsWrappedBeforeBeingPassedToMatcher () {
     Object[] parameter = new Object[2]
-    
+    parameter[0] = 'a'
+    parameter[1] = 'b'
+
     def closure = { it ->
-      assertEquals it, parameter
+      assert it == [parameter]
       return true
     }
     
-    assertTrue new ClosureMatcher(closure).matches(parameter as Object[])
+    assert new ClosureMatcher(closure).matches(parameter as Object[])
   }
 }
