@@ -6,6 +6,8 @@ Moggy is a mock objects framework for the [Groovy](http://groovy.codehaus.org/) 
 Moggy makes use of a lot of Groovy features (most of all Closures) and supports both typed and
 def'ed mock objects.
 
+Moggy is continuously build on Travis: [![Build Status](https://secure.travis-ci.org/is24-moggy/moggy.png?branch=master)](http://travis-ci.org/is24-moggy/moggy)
+
 ## Installation
 
 * _TODO_: Make downloads available
