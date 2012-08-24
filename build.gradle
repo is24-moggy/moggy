@@ -10,11 +10,9 @@ project.group= 'de.is24.groovy'
 uploadArchives {
   repositories {
     mavenDeployer {
-      pom.artifactId = 'moggy'
       repository url: 'http://devage001.arc.int/artifactory/libs-snapshot-local'
     }
 //    mavenDeployer {
-//      pom.artifactId = 'moggy'
 //      repository url: 'http://devage001.arc.int/artifactory/libs-release-local'
 //    }
   }
