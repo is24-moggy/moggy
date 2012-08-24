@@ -5,6 +5,7 @@ import org.junit.Test
 import static de.is24.groovy.moggy.AssertionUtils.shouldThrow
 import static de.is24.groovy.moggy.Moggy.anyValue
 import static org.junit.Assert.fail
+import static de.is24.groovy.moggy.Moggy.mock
 
 class MoggyAcceptanceTest {
 
@@ -201,5 +202,62 @@ class MoggyAcceptanceTest {
 
     assert 2 == mock.foo(0, 1, 2)
     assert 5 == mock.foo(0, 1, 5)
+  }
+
+  @Test
+  void shouldReturnMockObjectWhenDefiningMockWithNoType () {
+    def mock = Moggy.mock()
+    assert mock instanceof MockObject
+  }
+
+  @Test
+  void shouldReturnInstanceOfGivenTypeWhenDefiningMockWithInterfaceType () {
+    def mock = Moggy.mock(List)
+    assert mock instanceof List
+  }
+
+  @Test
+  void shouldReturnInstanceOfGivenTypeWhenDefiningMockWithClassType () {
+    def mock = Moggy.mock(ArrayList)
+    assert mock instanceof ArrayList
+  }
+
+  @Test
+  void shouldInvokeMethodOnTypedMockAndReturnNullWhenNoExpectationHasBeenSet () {
+    def mock = Moggy.mock(AnyGroovyClass)
+
+    assert mock instanceof AnyGroovyClass
+    assert null == mock.anyMethod()
+  }
+
+  @Test
+  void ensureThatDefinedBehaviorIsExecutedWhenUsingTypedMock () {
+    def mock = Moggy.mock(AnyGroovyClass)
+    Moggy.when(mock).anyMethod().thenReturn('foo')
+
+    assert 'foo' == mock.anyMethod()
+  }
+
+  @Test
+  void ensureThatMockOperationsCanBeVerified () {
+    def mock = Moggy.mock(AnyGroovyClass)
+    mock.anyMethod()
+    Moggy.verify(mock).anyMethod()
+  }
+
+  @Test
+  void ensureThatMockOperationsCanBeVerifiedMultipleTimes () {
+    def mock = Moggy.mock(AnyGroovyClass)
+    mock.anyMethod()
+
+    shouldThrow(AssertionError) {
+      Moggy.verify(mock, 2).anyMethod()
+    }
+  }
+}
+
+class AnyGroovyClass {
+  String anyMethod () {
+    'Hello mocks'
   }
 }

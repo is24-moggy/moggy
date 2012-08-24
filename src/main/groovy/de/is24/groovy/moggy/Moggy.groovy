@@ -38,7 +38,10 @@ class Moggy {
   /**
    * @return a fresh new mock object ready for use
    */
-  static def mock() {
+  static def mock(type = Object) {
+    if (type != Object) {
+      return MockObjectProxy.generate(type)
+    }
     new MockObject()
   }
 
@@ -46,23 +49,30 @@ class Moggy {
    * Used to define behavior on the given mock object. 
    * See this class' comment for an example.
    *
-   * @param mock the mock to define behavior for
+   * @param mockObject the mock to define behavior for
    * @return an expectation setter
    */
-  static def when(mock) {
-    new ExpectationSetter(mock)
+  static def when(mockObject) {
+    if (!(mockObject instanceof MockObject)) {
+      return when(mockObject.metaClass.delegate)
+    }
+    new ExpectationSetter(mockObject)
   }
 
   /**
    * Used to verify invocations made on this mock.
    * See this class' comment for an example.
    *
-   * @param mock the mock to verify invocations for
+   * @param mockObject the mock to verify invocations for
    * @param expectedNumberOfInvocations expected number of invocations (defaults to 1)
    * @return a mock verifier
    */
-  static def verify(mock, int expectedNumberOfInvocations = 1) {
-    new MockVerifier(mock, expectedNumberOfInvocations)
+  static def verify(mockObject, int expectedNumberOfInvocations = 1) {
+    if (!(mockObject instanceof MockObject)) {
+      return verify(mockObject.metaClass.delegate, expectedNumberOfInvocations)
+    }
+
+    new MockVerifier(mockObject, expectedNumberOfInvocations)
   }
 
   /**
