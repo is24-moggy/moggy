@@ -38,7 +38,7 @@ class Moggy {
   /**
    * @return a fresh new mock object ready for use
    */
-  static def mock () {
+  static def mock() {
     new MockObject()
   }
 
@@ -49,7 +49,7 @@ class Moggy {
    * @param mock the mock to define behavior for
    * @return an expectation setter
    */
-  static def when (mock) {
+  static def when(mock) {
     new ExpectationSetter(mock)
   }
 
@@ -61,43 +61,35 @@ class Moggy {
    * @param expectedNumberOfInvocations expected number of invocations (defaults to 1)
    * @return a mock verifier
    */
-  static def verify (mock, expectedNumberOfInvocations=1) {
+  static def verify(mock, int expectedNumberOfInvocations = 1) {
     new MockVerifier(mock, expectedNumberOfInvocations)
   }
 
   /**
-   * @deprecated use anyValue instead
    * @return an argument matcher matching all values.
    */
-  static def any () {
-    return ANY_MATCHER
-  }
-
-    /**
-   * @return an argument matcher matching all values.
-   */
-  static def anyValue () {
+  static Matcher anyValue() {
     return ANY_MATCHER
   }
 
   /**
    * @return an argument matcher matching <code>null</code> values.
    */
-  static def nullValue () {
+  static Matcher nullValue() {
     return NULL_MATCHER
   }
 
   /**
    * @return an argument matcher matching all non-null values.
    */
-  static def notNull () {
+  static Matcher notNull() {
     return NOT_NULL_MATCHER
   }
 
   /**
    * @return an argument matcher matching closure value.
    */
-  static def closureMatcher(closure) {
+  static Matcher closureMatcher(closure) {
     return new ClosureMatcher(closure)
   }
 
@@ -107,35 +99,35 @@ class Moggy {
    * in expectation setters. This method is provided for those cases
    * where eq(...) can improve the readability.
    */
-  static def eq (value) {
+  static Matcher eq(value) {
     return new ClosureMatcher({it == value})
   }
 
   /**
    * @return convenience method to return a {@link ContainsMatcher}
    */
-  static def contains (value) {
-    return new ContainsMatcher(value:value)
+  static Matcher contains(value) {
+    return new ContainsMatcher(value: value)
   }
 
   /**
    * @return convenience method to return a {@link StartsWithMatcher}
    */
-  static def startsWith (value) {
-    return new StartsWithMatcher(value:value)
+  static Matcher startsWith(value) {
+    return new StartsWithMatcher(value: value)
   }
 
   /**
    * @return convenience method to return a {@link EndsWithMatcher}
    */
-  static def endsWith (value) {
-    return new EndsWithMatcher(value:value)
+  static Matcher endsWith(value) {
+    return new EndsWithMatcher(value: value)
   }
 
-    /**
+  /**
    * @return convenience method to return a {@link RegexMatcher}
    */
-  static def matches (value) {
+  static Matcher matches(value) {
     return new RegexMatcher(value)
   }
 }

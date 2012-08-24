@@ -1,26 +1,32 @@
 package de.is24.groovy.moggy.behavior.matchers;
 
-import groovy.util.GroovyTestCase
 
-public class StartsWithMatcherTest extends GroovyTestCase {
-  
-  void testShouldNotMatchNull () {
-    assertFalse new StartsWithMatcher(value:"Foo").matches(null)
+import org.junit.Test
+
+public class StartsWithMatcherTest {
+
+  @Test
+  void shouldNotMatchNull() {
+    assert false == new StartsWithMatcher(value: "Foo").matches(null)
   }
 
-  void testShouldMatchArgumentThatIsEqualToValue () {
-    assertTrue new StartsWithMatcher(value:"Foo").matches("Foo")
+  @Test
+  void shouldMatchArgumentThatIsEqualToValue() {
+    assert new StartsWithMatcher(value: "Foo").matches("Foo")
   }
 
-  void testNotShouldMatchArgumentThatEndsWithValue () {
-    assertFalse new StartsWithMatcher(value:"Foo").matches("BarFoo")
+  @Test
+  void shouldNotMatchArgumentThatEndsWithValue() {
+    assert false == new StartsWithMatcher(value: "Foo").matches("BarFoo")
   }
 
-  void testShouldMatchArgumentThatBeginsWithValue () {
-    assertTrue new StartsWithMatcher(value:"Foo").matches("FooBar")
+  @Test
+  void shouldMatchArgumentThatBeginsWithValue() {
+    assert new StartsWithMatcher(value: "Foo").matches("FooBar")
   }
 
-  void testShouldNotMatchArgumentThatContainsValue () {
-    assertFalse new StartsWithMatcher(value:"Foo").matches("BarFooBar")
+  @Test
+  void shouldNotMatchArgumentThatContainsValue() {
+    assert false == new StartsWithMatcher(value: "Foo").matches("BarFooBar")
   }
 }

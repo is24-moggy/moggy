@@ -1,46 +1,54 @@
 package de.is24.groovy.moggy
 
-class MethodParametersTest extends GroovyTestCase {
+import org.junit.Test
 
-  void testShouldProduceTheSameHashCodeForEqualInstances () {
+class MethodParametersTest {
+
+  @Test
+  void shouldProduceTheSameHashCodeForEqualInstances () {
     def one = new MethodParameters(values:["a", "b", "c"])
     def two = new MethodParameters(values:["a", "b", "c"])
 
-    assertTrue one.hashCode() == two.hashCode()
+    assert one.hashCode() == two.hashCode()
   }
 
-  void testShouldProduceDifferentHashCodeForInequalInstances () {
+  @Test
+  void shouldProduceDifferentHashCodeForInequalInstances () {
     def one = new MethodParameters(values:["a", "b", "c"])
     def two = new MethodParameters(values:["c", "b", "a"])
 
-    assertFalse one.hashCode() == two.hashCode()
+    assert one.hashCode() != two.hashCode()
   }
 
-  void testShouldProduceDifferentHashCodeForInequalInstancesOfDifferentSize () {
+  @Test
+  void shouldProduceDifferentHashCodeForInequalInstancesOfDifferentSize () {
     def one = new MethodParameters(values:["a", "b", "c"])
     def two = new MethodParameters(values:["a", "b"])
 
-    assertFalse one.hashCode() == two.hashCode()
+    assert one.hashCode() != two.hashCode()
   }
 
-  void testShouldInstancesWithEqualValuesShouldBeEqual() {
+  @Test
+  void shouldInstancesWithEqualValuesShouldBeEqual() {
     def one = new MethodParameters(values:["a", "b", "c"])
     def two = new MethodParameters(values:["a", "b", "c"])
 
-    assertEquals one, two
+    assert one == two
   }
 
-  void testInstancesWithDifferentValuesShouldNotBeEqual() {
+  @Test
+  void instancesWithDifferentValuesShouldNotBeEqual() {
     def one = new MethodParameters(values:["a", "b", "c"])
     def two = new MethodParameters(values:["c", "b", "a"])
 
-    assertFalse one == two
+    assert one != two
   }
 
-  void testInstancesWithDifferentNumberOfValuesShouldNotBeEqual() {
+  @Test
+  void instancesWithDifferentNumberOfValuesShouldNotBeEqual() {
     def one = new MethodParameters(values:["a", "b", "c"])
     def two = new MethodParameters(values:["a", "b"])
 
-    assertFalse one == two
+    assert one != two
   }
 }

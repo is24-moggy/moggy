@@ -5,14 +5,14 @@ import de.is24.groovy.moggy.behavior.Matcher
 
 class ClosureMatcher implements Matcher {
 
-  Closure closure
+  private final Closure closure
 
-  ClosureMatcher(closure) {
+  ClosureMatcher(Closure closure) {
     this.closure = closure
   }
 
-  Boolean matches (Object argument) {
-    if (argument instanceof Object[]) {      
+  Boolean matches(Object argument) {
+    if (argument instanceof Object[]) {
       Object wrappedArgument = new Object[1]
       wrappedArgument[0] = argument
       argument = wrappedArgument

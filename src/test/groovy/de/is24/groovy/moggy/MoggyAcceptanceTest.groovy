@@ -1,46 +1,52 @@
 package de.is24.groovy.moggy
 
-import static junit.framework.Assert.*
-import groovy.util.GroovyTestCase
-import static de.is24.groovy.moggy.Moggy.any
-import static de.is24.groovy.moggy.Moggy.notNull
+import org.junit.Test
 
-class MoggyTest extends GroovyTestCase {
+import static de.is24.groovy.moggy.AssertionUtils.shouldThrow
+import static de.is24.groovy.moggy.Moggy.anyValue
+import static org.junit.Assert.fail
 
-  void testMockShouldReturnNullWhenNoBehaviorHasBeenDefined() {
+class MoggyAcceptanceTest {
+
+  @Test
+  void mockShouldReturnNullWhenNoBehaviorHasBeenDefined() {
     def mock = Moggy.mock()
 
-    assertNull mock.boom("foo", "bar", 99)
+    assert null == mock.boom("foo", "bar", 99)
   }
 
-  void testMockShouldReturnValueWhenBehaviorHasBeenDefined() {
+  @Test
+  void mockShouldReturnValueWhenBehaviorHasBeenDefined() {
     def mock = Moggy.mock()
 
     Moggy.when(mock).boom("foo", "bar", 99).thenReturn("result")
 
-    assertEquals "result", mock.boom("foo", "bar", 99)
+    assert "result" == mock.boom("foo", "bar", 99)
   }
 
-  void testMockShouldReturnDifferentValuesForDifferentArgumentsWhenDifferentBehaviorsHaveBeenDefined() {
+  @Test
+  void mockShouldReturnDifferentValuesForDifferentArgumentsWhenDifferentBehaviorsHaveBeenDefined() {
     def mock = Moggy.mock()
 
     Moggy.when(mock).boom("foo").thenReturn("foo")
     Moggy.when(mock).boom("bar").thenReturn("bar")
 
-    assertEquals "foo", mock.boom("foo")
-    assertEquals "bar", mock.boom("bar")
+    assert "foo" == mock.boom("foo")
+    assert "bar" == mock.boom("bar")
   }
 
-  void testMockShouldReturnDifferentValuesWhenDifferentBehaviorsHaveBeenDefined() {
+  @Test
+  void mockShouldReturnDifferentValuesWhenDifferentBehaviorsHaveBeenDefined() {
     def mock = Moggy.mock()
 
     Moggy.when(mock).boom("foo").thenReturn("foo").thenReturn("bar")
 
-    assertEquals "foo", mock.boom("foo")
-    assertEquals "bar", mock.boom("foo")
+    assert "foo" == mock.boom("foo")
+    assert "bar" == mock.boom("foo")
   }
 
-  void testMockShouldThrowExceptionWhenBehaviorIsBeenDefined() {
+  @Test
+  void mockShouldThrowExceptionWhenBehaviorIsBeenDefined() {
     def mock = Moggy.mock()
 
     Moggy.when(mock).boom("foo").thenThrow(new IllegalArgumentException("foo"))
@@ -53,7 +59,8 @@ class MoggyTest extends GroovyTestCase {
     }
   }
 
-  void testShouldVerifyMockCall() {
+  @Test
+  void shouldVerifyMockCall() {
     def mock = Moggy.mock()
 
     mock.boom("foo")
@@ -61,17 +68,19 @@ class MoggyTest extends GroovyTestCase {
     Moggy.verify(mock).boom("foo")
   }
 
-  void testShouldVerifyMockCallWithAnyMatcher() {
+  @Test
+  void shouldVerifyMockCallWithAnyMatcher() {
     def mock = Moggy.mock()
 
     mock.boom("bar", "foo", null)
 
-    Moggy.verify(mock).boom(any(), "foo", any())
-    Moggy.verify(mock).boom("bar", any(), any())
-    Moggy.verify(mock).boom(any(), any(), any())
+    Moggy.verify(mock).boom(anyValue(), "foo", anyValue())
+    Moggy.verify(mock).boom("bar", anyValue(), anyValue())
+    Moggy.verify(mock).boom(anyValue(), anyValue(), anyValue())
   }
 
-  void testShouldVerifyWithClosureMatcher() {
+  @Test
+  void shouldVerifyWithClosureMatcher() {
     def mock = Moggy.mock()
 
     mock.boom("test")
@@ -79,7 +88,8 @@ class MoggyTest extends GroovyTestCase {
     Moggy.verify(mock).boom(Moggy.closureMatcher { it instanceof String })
   }
 
-  void testVerifyShouldFailWithClosureMatcher() {
+  @Test
+  void verifyShouldFailWithClosureMatcher() {
     def mock = Moggy.mock()
     mock.boom("test")
     try {
@@ -92,7 +102,8 @@ class MoggyTest extends GroovyTestCase {
   }
 
 
-  void testShouldThrowExceptionWhenVerifyingMockCallAndArgumentsDoNotMath() {
+  @Test
+  void shouldThrowExceptionWhenVerifyingMockCallAndArgumentsDoNotMath() {
     def mock = Moggy.mock()
 
     mock.boom("foo")
@@ -105,7 +116,8 @@ class MoggyTest extends GroovyTestCase {
     }
   }
 
-  void testShouldThrowExceptionWhenVerifyingMockCallAndExpectedMethodHasNotBeenCalled() {
+  @Test
+  void shouldThrowExceptionWhenVerifyingMockCallAndExpectedMethodHasNotBeenCalled() {
     def mock = Moggy.mock()
 
     mock.boom("foo")
@@ -118,7 +130,8 @@ class MoggyTest extends GroovyTestCase {
     }
   }
 
-  void testShouldPassParametersToBehaviorClosures() {
+  @Test
+  void shouldPassParametersToBehaviorClosures() {
     def mock = Moggy.mock()
 
     Moggy.when(mock).foo(7).thenDo { param -> assert [7] == param}
@@ -126,39 +139,44 @@ class MoggyTest extends GroovyTestCase {
     mock.foo(7)
   }
 
-  void testShouldDefinePropertyDynamically() {
+  @Test
+  void shouldDefinePropertyDynamically() {
     def mock = Moggy.mock()
 
     mock.foo = 7
 
-    assertEquals 7, mock.foo
+    assert 7 == mock.foo
   }
 
-  void testShouldReturnNullForUndefinedProperty() {
+  @Test
+  void shouldReturnNullForUndefinedProperty() {
     def mock = Moggy.mock()
 
-    assertNull mock.foo
+    assert null == mock.foo
   }
 
-  void testShouldExecuteClosureWhenDereferencingPropertyAndPropertyHasBeenSetBefore() {
+  @Test
+  void shouldExecuteClosureWhenDereferencingPropertyAndPropertyHasBeenSetBefore() {
     def mock = Moggy.mock()
 
     mock.foo = { throw new RuntimeException("Caboom") }
 
-    shouldFail(RuntimeException.class) { mock.foo }
+    shouldThrow(RuntimeException) { mock.foo }
   }
 
-  void testShouldFailWhenNumberOfInvocationsDoesNotMatchExpectation () {
+  @Test
+  void shouldFailWhenNumberOfInvocationsDoesNotMatchExpectation () {
     def mock = Moggy.mock()
 
     mock.foo()
 
-    shouldFail(AssertionError.class) {
+    shouldThrow(AssertionError) {
       Moggy.verify(mock, 2).foo()
     }
   }
 
-  void testShouldVerifyThatNumberOfInvocationsMatchExpectation () {
+  @Test
+  void shouldVerifyThatNumberOfInvocationsMatchExpectation () {
     def mock = Moggy.mock()
 
     mock.foo()
@@ -167,19 +185,21 @@ class MoggyTest extends GroovyTestCase {
     Moggy.verify(mock, 2).foo()
   }
 
-  void testShouldVerifyNoInvocation () {
+  @Test
+  void shouldVerifyNoInvocation () {
     def mock = Moggy.mock()
 
     Moggy.verify(mock, 0).foo()
   }
 
-  void testShouldPickCorrectBehaviorWhenDefiningMultipleExpectations () {
+  @Test
+  void shouldPickCorrectBehaviorWhenDefiningMultipleExpectations () {
     def mock = Moggy.mock()
 
     Moggy.when(mock).foo(Moggy.anyValue(), 1, 2).thenReturn(2)
     Moggy.when(mock).foo(Moggy.anyValue(), 1, 5).thenReturn(5)
 
-    assertEquals 2, mock.foo(0, 1, 2)
-    assertEquals 5, mock.foo(0, 1, 5)
+    assert 2 == mock.foo(0, 1, 2)
+    assert 5 == mock.foo(0, 1, 5)
   }
 }

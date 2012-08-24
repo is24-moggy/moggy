@@ -1,34 +1,43 @@
 package de.is24.groovy.moggy
 
+import org.junit.Test
 
-class MoggyMatcherTests extends GroovyTestCase {
 
-  void testNotNullShouldNotMatchNullValue() {
-    assertFalse Moggy.notNull().matches(null)
+class MoggyMatcherTests {
+
+  @Test
+  void notNullShouldNotMatchNullValue() {
+    assert false == Moggy.notNull().matches(null)
   }
 
-  void testNotNullShouldMatchNonNullValue() {
-    assertTrue Moggy.notNull().matches("foo")
+  @Test
+  void notNullShouldMatchNonNullValue() {
+    assert Moggy.notNull().matches("foo")
   }
 
-  void testEqualsShouldNotMatchUnequalValue() {
-    assertFalse Moggy.eq("foo").matches("bar")
+  @Test
+  void equalsShouldNotMatchUnequalValue() {
+    assert false == Moggy.eq("foo").matches("bar")
   }
 
-  void testEqualsShouldMatchEqualValue() {
-    assertTrue Moggy.eq("foo").matches("foo")
+  @Test
+  void equalsShouldMatchEqualValue() {
+    assert Moggy.eq("foo").matches("foo")
   }
 
-  void testAnyShouldMatchAnyValue() {
-    assertTrue Moggy.anyValue().matches("bar")
-    assertTrue Moggy.anyValue().matches(2)
+  @Test
+  void anyShouldMatchAnyValue() {
+    assert Moggy.anyValue().matches("bar")
+    assert Moggy.anyValue().matches(2)
   }
 
-  void testNullShouldNotMatchNotNullValue() {
-    assertFalse Moggy.nullValue().matches("foo")
+  @Test
+  void nullShouldNotMatchNotNullValue() {
+    assert false == Moggy.nullValue().matches("foo")
   }
 
-  void testNullShouldMatchNullValue() {
-    assertTrue Moggy.nullValue().matches(null)
+  @Test
+  void nullShouldMatchNullValue() {
+    assert Moggy.nullValue().matches(null)
   }
 }

@@ -1,80 +1,91 @@
 package de.is24.groovy.moggy;
 
-import static de.is24.groovy.moggy.Moggy.*
-import groovy.util.GroovyTestCase
 
+import org.junit.Test
 
-class MatcherTest extends GroovyTestCase {
-  void testAny () {
+import static de.is24.groovy.moggy.Moggy.mock
+import static de.is24.groovy.moggy.Moggy.when
+
+class MatcherTest {
+
+  @Test
+  void any () {
     def mock = mock()
 
-    when(mock).boom(any()).thenReturn("foo")
+    when(mock).boom(Moggy.anyValue()).thenReturn("foo")
 
-    assertEquals "foo", mock.boom("foo")
-    assertEquals "foo", mock.boom("bar")
-    assertEquals "foo", mock.boom(4711)
+    assert "foo" == mock.boom("foo")
+    assert "foo" == mock.boom("bar")
+    assert "foo" == mock.boom(4711)
   }
 
-  void testNullValue () {
+  @Test
+  void nullValue () {
     def mock = mock()
 
-    when(mock).boom(nullValue()).thenReturn("foo")
+    when(mock).boom(Moggy.nullValue()).thenReturn("foo")
 
-    assertEquals "foo", mock.boom(null)
-    assertEquals null, mock.boom(4711)
+    assert "foo" == mock.boom(null)
+    assert null == mock.boom(4711)
   }
 
-  void testNotNull () {
+  @Test
+  void notNull () {
     def mock = mock()
 
-    when(mock).boom(notNull()).thenReturn("foo")
+    when(mock).boom(Moggy.notNull()).thenReturn("foo")
 
-    assertEquals "foo", mock.boom(4711)
-    assertEquals null, mock.boom(null)
+    assert "foo" == mock.boom(4711)
+    assert null == mock.boom(null)
   }
 
-  void testEq () {
+  @Test
+  void eq () {
     def mock = mock()
 
-    when(mock).boom(eq("foo")).thenReturn("foo")
+    when(mock).boom(Moggy.eq("foo")).thenReturn("foo")
 
-    assertEquals "foo", mock.boom("foo")
-    assertEquals null, mock.boom("bar")
+    assert "foo" == mock.boom("foo")
+    assert null == mock.boom("bar")
   }
 
-  void testContains () {
+  @Test
+  void contains () {
     def mock = mock()
 
     when(mock).boom(Moggy.contains("foo")).thenReturn("foo")
 
-    assertEquals "foo", mock.boom("my foo lady")
-    assertEquals null, mock.boom("bar")
+    assert "foo" == mock.boom("my foo lady")
+    assert null == mock.boom("bar")
   }
 
-  void testStartsWith () {
+  @Test
+  void startsWith () {
     def mock = mock()
 
-    when(mock).boom(startsWith("foo")).thenReturn("foo")
+    when(mock).boom(Moggy.startsWith("foo")).thenReturn("foo")
 
-    assertEquals "foo", mock.boom("foobar")
-    assertEquals null, mock.boom("barfoo")
+    assert "foo" == mock.boom("foobar")
+    assert null == mock.boom("barfoo")
   }
 
-  void testEndsWith () {
+  @Test
+  void endsWith () {
     def mock = mock()
 
-    when(mock).boom(endsWith("foo")).thenReturn("foo")
+    when(mock).boom(Moggy.endsWith("foo")).thenReturn("foo")
 
-    assertEquals "foo", mock.boom("barfoo")
-    assertEquals null, mock.boom("foobar")
+    assert "foo" == mock.boom("barfoo")
+    assert null == mock.boom("foobar")
   }
 
-  void testMatches () {
+  @Test
+  void matches () {
     def mock = mock()
 
-    when(mock).boom(matches('^[foo]{3}$')).thenReturn("foo")
+    when(mock).boom(Moggy.matches('^[foo]{3}$')).thenReturn("foo")
 
-    assertEquals "foo", mock.boom("foo")
-    assertEquals null, mock.boom("bar")
+    assert "foo" == mock.boom("foo")
+    assert null == mock.boom("bar")
   }
 }
