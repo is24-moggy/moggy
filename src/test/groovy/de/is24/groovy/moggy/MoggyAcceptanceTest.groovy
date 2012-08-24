@@ -6,6 +6,10 @@ import static de.is24.groovy.moggy.AssertionUtils.shouldThrow
 import static de.is24.groovy.moggy.Moggy.anyValue
 import static org.junit.Assert.fail
 import static de.is24.groovy.moggy.Moggy.mock
+import static de.is24.groovy.moggy.Moggy.when
+import java.text.Collator
+
+import static de.is24.groovy.moggy.Moggy.verify
 
 class MoggyAcceptanceTest {
 
@@ -253,6 +257,17 @@ class MoggyAcceptanceTest {
     shouldThrow(AssertionError) {
       Moggy.verify(mock, 2).anyMethod()
     }
+  }
+
+  @Test
+  void shouldInvokeMethodOnJavaTypedMockAndReturnNullWhenNoExpectationHasBeenSet () {
+    def mock = Moggy.mock(Collator)
+    when(mock).getStrength().thenReturn(77)
+
+    assert mock instanceof Collator
+    assert 77 == mock.getStrength()
+
+    verify(mock).getStrength()
   }
 }
 
