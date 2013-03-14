@@ -10,8 +10,8 @@ project.group= 'de.is24.groovy'
 uploadArchives {
   repositories {
     mavenDeployer {
-      repository url: 'http://devage001.arc.int/artifactory/libs-snapshot-local'
-//      repository url: 'http://devage001.arc.int/artifactory/libs-release-local'
+      repository url: "http://$repoServer/artifactory/libs-snapshot-local"
+//      repository url: "http://$repoServer/artifactory/libs-release-local"
     }
   }
 }
