@@ -25,3 +25,7 @@ dependencies {
   groovy 'junit:junit:4.10'
 }
 
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.3'
+}
+
